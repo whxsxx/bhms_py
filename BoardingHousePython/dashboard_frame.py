@@ -23,7 +23,7 @@ def get_total_room_price():
             database="pybh_db"
         )
         cursor = conn.cursor()
-        cursor.execute("SELECT SUM(room_price) FROM tenants")
+        cursor.execute("SELECT SUM(expense_amount) FROM expense")
         result = cursor.fetchone()
         total_room_price = result[0] if result[0] is not None else 0
         conn.close()
@@ -140,7 +140,7 @@ class DashboardFrame(ttk.Frame):
         numTenants_label.pack(pady=(30,10), padx=(200,40))
 
 
-        numRevenue_frame = ttk.LabelFrame(self, text="TOTAL REVENUE", width=350, height=150)
+        numRevenue_frame = ttk.LabelFrame(self, text="TOTAL EXPENSE", width=350, height=150)
         numRevenue_frame.grid(column=2, row=1, padx=100, pady=(50,10))
 
         global numRevenue_label
