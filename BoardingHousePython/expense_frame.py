@@ -29,7 +29,7 @@ def fetch_expense_data():
         conn = mysql.connector.connect(
             host="localhost",
             user="root",
-            password="",  # Your MySQL password
+            password="", 
             database="pybh_db"
         )
         cursor = conn.cursor()
@@ -60,12 +60,10 @@ def populate_expense_treeview():
 def manage_expenses(action):
     try:
         if action == "insert":
-            # Get values from entry widgets
             expense_name = expenseName_entry.get()
             expense_date = expenseDate_entry.get()
             expense_amount = expenseAmount_entry.get()
 
-            # Insert record into the database
             cursor.execute("INSERT INTO expense (expense_name, expense_date, expense_amount) VALUES (%s, %s, %s)",
                         (expense_name, expense_date, expense_amount))
 
@@ -74,31 +72,24 @@ def manage_expenses(action):
             messagebox.showinfo("Success", "Expense created successfully")
 
         elif action == "update":
-            # Get expense id
             expense_id = expense_id_entry.get()
 
-            # Get updated values from entry widgets
             expense_name = expenseName_entry.get()
             expense_date = expenseDate_entry.get()
             expense_amount = expenseAmount_entry.get()
 
-            # Update record in the database
             cursor.execute("UPDATE expense SET expense_name=%s, expense_date=%s, expense_amount=%s WHERE expense_id=%s",
                         (expense_name, expense_date, expense_amount, expense_id))
 
-            # Commit changes
             conn.commit()
             messagebox.showinfo("Success", "Expense updated successfully")
 
         elif action == "delete":
             if messagebox.askyesno("Confirmation", "Are you sure you want to delete this record?"):
-            # Get expense id
                 expense_id = expense_id_entry.get()
 
-                # Delete record from the database
                 cursor.execute("DELETE FROM expense WHERE expense_id=%s", (expense_id,))
 
-                # Commit changes
                 conn.commit()
                 messagebox.showinfo("Success", "Expense deleted successfully")
 
