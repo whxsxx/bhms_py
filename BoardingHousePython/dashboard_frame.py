@@ -12,6 +12,8 @@ conn = mysql.connector.connect(
 )
 cursor = conn.cursor()
 
+
+
 def get_total_room_price():
     try:
         conn = mysql.connector.connect(
@@ -21,7 +23,7 @@ def get_total_room_price():
             database="pybh_db"
         )
         cursor = conn.cursor()
-        cursor.execute("SELECT SUM(room_price) FROM tenants")
+        cursor.execute("SELECT SUM(expense_amount) FROM expense")
         result = cursor.fetchone()
         total_room_price = result[0] if result[0] is not None else 0
         conn.close()
@@ -92,7 +94,7 @@ def get_room_status():
         result = cursor.fetchall()
         room_status = []
         for room_number, tenant_count in result:
-            status = "full" if tenant_count >= 5 else "not full"
+            status = "Room is full / 5 person" if tenant_count >= 5 else "Room is not full yet" + " / " + str(tenant_count) + " person"
             room_status.append((room_number, status))
         conn.close()
         return room_status
@@ -114,11 +116,11 @@ def refreshData():
 
 
 
-
 class DashboardFrame(ttk.Frame):
     def __init__(self, parent,show_index_frame,show_tenants_frame,show_room_frame,show_expense_frame):
         super().__init__(parent, width=900, height=800)
-        self.pack_propagate(False)
+        self.pack_propagate(False);
+        
         
         title_label = ttk.Label(self, text="DASHBOARD", foreground="white", font=("",30,'bold'))
         title_label.grid(row=0, column=0, padx=70, pady=(50,20))
@@ -138,7 +140,7 @@ class DashboardFrame(ttk.Frame):
         numTenants_label.pack(pady=(30,10), padx=(200,40))
 
 
-        numRevenue_frame = ttk.LabelFrame(self, text="TOTAL REVENUE", width=350, height=150)
+        numRevenue_frame = ttk.LabelFrame(self, text="TOTAL EXPENSE", width=350, height=150)
         numRevenue_frame.grid(column=2, row=1, padx=100, pady=(50,10))
 
         global numRevenue_label

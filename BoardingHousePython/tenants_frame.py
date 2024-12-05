@@ -22,6 +22,7 @@ def fetch_rooms():
 
 def populate_comboboxes():
     rooms = fetch_rooms()
+    print(rooms)
     room_numbers = [room[0] for room in rooms]
     room_prices = [room[1] for room in rooms]
 

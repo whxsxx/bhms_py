@@ -28,30 +28,23 @@ def manage_rooms(action):
             messagebox.showinfo("Success", "Room created successfully")
 
         elif action == "update":
-    # Get room id
             room_id = room_id_entry.get()
 
-            # Get updated values from entry widgets
             new_room_number = room_num_entry.get()
             room_price = roomPrice_entry.get()
 
             try:
-                # Start a transaction
                 conn.start_transaction()
 
-                # Update record in the rooms table
                 cursor.execute("UPDATE rooms SET room_number=%s, room_price=%s WHERE room_id=%s",
                             (new_room_number, room_price, room_id))
 
-                # Update corresponding records in the tenants table
                 cursor.execute("UPDATE tenants SET room_number=%s, room_price=%s WHERE room_number=%s",
                             (new_room_number, room_price, room_id))
 
-                # Commit the transaction
                 conn.commit()
                 messagebox.showinfo("Success", "Room updated successfully")
             except mysql.connector.Error as err:
-                # Rollback the transaction if an error occurs
                 conn.rollback()
                 messagebox.showerror("Error", f"Failed to update room: {err}")
     
@@ -91,7 +84,7 @@ def fetch_rooms_data():
         conn = mysql.connector.connect(
             host="localhost",
             user="root",
-            password="",  # Your MySQL password
+            password="", 
             database="pybh_db"
         )
         cursor = conn.cursor()
